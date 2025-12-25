@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>路径测试</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        .grid { display: inline-grid; grid-template-columns: repeat(9, 40px); gap: 2px; }
+        .cell { width: 40px; height: 40px; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+        .obstacle { background: #666; color: white; }
+        .spawn { background: #f88; }
+        .goal { background: #8f8; }
+        .path { background: #ff0; }
+    </style>
+</head>
+<body>
+    <h2>路径测试 - 验证敌人不会穿过障碍物</h2>
+    <div id="map1"></div>
+    <script>
+        const CONFIG = { GRID_WIDTH: 9, GRID_HEIGHT: 4 };
+        
+        class GameMap {
+            constructor() {
+                this.width = CONFIG.GRID_WIDTH;
+                this.height = CONFIG.GRID_HEIGHT;
+                this.grid = Array(this.height).fill(null).map(() => Array(this.width).fill(0));
+                this.spawnPoints = [
+                    { x: this.width - 1, y: 0 },
+                    { x: this.width - 1, y: this.height - 1 }
+                ];
+                this.goalPoint = { x: 0, y: this.height - 1 };
+                this.paths = [];
+                this.generateMap();
+            }
+            
+            generateMap() {
+                this.spawnPoints.forEach(spawn => {
+                    const path = this.generatePath(spawn, this.goalPoint);
+                    this.paths.push(path);
+                });
+                
+                let attempts = 0, obstaclesPlaced = 0;
+                while (obstaclesPlaced < 6 && attempts < 50) {
+                    attempts++;
+                    const x = Math.floor(Math.random() * this.width);
+                    const y = Math.floor(Math.random() * this.height);
+                    
+                    if (this.spawnPoints.some(p => p.x === x && p.y === y) ||
+                        (this.goalPoint.x === x && this.goalPoint.y === y) ||
+                        this.grid[y][x] === 2) continue;
+                    
+                    this.grid[y][x] = 2;
+                    
+                    let allPathsValid = true;
+                    for (let spawn of this.spawnPoints) {
+                        const testPath = this.generatePath(spawn, this.goalPoint);
+                        if (testPath.length === 0 || testPath.length > this.width * this.height) {
+                            allPathsValid = false;
+                            break;
+                        }
+                    }
+                    
+                    if (allPathsValid) {
+                        obstaclesPlaced++;
+                        this.paths = [];
+                        this.spawnPoints.forEach(spawn => {
+                            const path = this.generatePath(spawn, this.goalPoint);
+                            this.paths.push(path);
+                        });
+                    } else {
+                        this.grid[y][x] = 0;
+                    }
+                }
+            }
+            
+            generatePath(start, goal) {
+                const openSet = [{ ...start, g: 0, h: this.heuristic(start, goal), f: 0, parent: null }];
+                const closedSet = new Set();
+                
+                while (openSet.length > 0) {
+                    openSet.sort((a, b) => a.f - b.f);
+                    const current = openSet.shift();
+                    
+                    if (current.x === goal.x && current.y === goal.y) {
+                        return this.reconstructPath(current);
+                    }
+                    
+                    closedSet.add(`${current.x},${current.y}`);
+                    
+                    const neighbors = [
+                        { x: current.x + 1, y: current.y },
+                        { x: current.x - 1, y: current.y },
+                        { x: current.x, y: current.y + 1 },
+                        { x: current.x, y: current.y - 1 }
+                    ];
+                    
+                    for (let neighbor of neighbors) {
+                        if (neighbor.x < 0 || neighbor.x >= this.width || 
+                            neighbor.y < 0 || neighbor.y >= this.height) continue;
+                        
+                        if (this.grid[neighbor.y][neighbor.x] === 2) continue;
+                        
+                        const key = `${neighbor.x},${neighbor.y}`;
+                        if (closedSet.has(key)) continue;
+                        
+                        const g = current.g + 1;
+                        const h = this.heuristic(neighbor, goal);
+                        const f = g + h;
+                        
+                        const existing = openSet.find(n => n.x === neighbor.x && n.y === neighbor.y);
+                        if (!existing) {
+                            openSet.push({ ...neighbor, g, h, f, parent: current });
+                        } else if (g < existing.g) {
+                            existing.g = g;
+                            existing.f = f;
+                            existing.parent = current;
+                        }
+                    }
+                }
+                return [];
+            }
+            
+            heuristic(a, b) {
+                return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
+            }
+            
+            reconstructPath(node) {
+                const path = [];
+                let current = node;
+                while (current) {
+                    path.unshift({ x: current.x, y: current.y });
+                    current = current.parent;
+                }
+                return path;
+            }
+        }
+        
+        const map = new GameMap();
+        const container = document.getElementById('map1');
+        container.className = 'grid';
+        
+        for (let y = 0; y < CONFIG.GRID_HEIGHT; y++) {
+            for (let x = 0; x < CONFIG.GRID_WIDTH; x++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                
+                if (map.grid[y][x] === 2) {
+                    cell.className += ' obstacle';
+                    cell.textContent = '🗿';
+                } else if (map.spawnPoints.some(p => p.x === x && p.y === y)) {
+                    cell.className += ' spawn';
+                    cell.textContent = '🚪';
+                } else if (map.goalPoint.x === x && map.goalPoint.y === y) {
+                    cell.className += ' goal';
+                    cell.textContent = '🏠';
+                } else {
+                    // 检查是否在路径上
+                    let onPath = false;
+                    for (let path of map.paths) {
+                        if (path.some(p => p.x === x && p.y === y)) {
+                            onPath = true;
+                            break;
+                        }
+                    }
+                    if (onPath) {
+                        cell.className += ' path';
+                        cell.textContent = '→';
+                    }
+                }
+                
+                container.appendChild(cell);
+            }
+        }
+        
+        console.log('地图生成完成');
+        console.log('路径1:', map.paths[0]);
+        console.log('路径2:', map.paths[1]);
+    </script>
+</body>
+</html>
