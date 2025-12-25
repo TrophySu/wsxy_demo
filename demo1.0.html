@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>卫戍协议：盟约</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="imageCanvas" style="display:none;"></canvas>
+    
+    <div id="game-container">
+        <div id="header">
+            <div class="info-panel">
+                <div class="info-item">
+                    <span class="label">🎯 回合</span>
+                    <span class="value" id="round">1</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">💰 金币</span>
+                    <span class="value"><span id="gold">5</span>/<span id="max-gold">5</span></span>
+                </div>
+                <div class="info-item">
+                    <span class="label">❤️ 生命</span>
+                    <span class="value" id="life">20</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">🏪 商店</span>
+                    <span class="value">Lv.<span id="shop-level">1</span></span>
+                </div>
+            </div>
+            <div class="button-group">
+                <button id="start-battle" class="btn-primary">⚔️ 开始战斗</button>
+                <button id="refresh-shop" class="btn-secondary">🔄 刷新 (2💰)</button>
+                <button id="upgrade-shop" class="btn-upgrade">⬆️ 升级 (<span id="upgrade-cost">5</span>�)</b/utton>
+                <button id="show-next-wave" class="btn-info">👁️ 查看敌人</button>
+            </div>
+        </div>
+        
+        <div id="main-area">
+            <div id="battlefield">
+                <h3>🗺️ 战场地图</h3>
+                <div id="grid"></div>
+            </div>
+            
+            <div id="shop-area">
+                <h3>🏪 干员商店</h3>
+                <div id="shop"></div>
+            </div>
+        </div>
+        
+        <div id="bench-area">
+            <h3>📦 备战区 (右键或Ctrl+点击卖出干员，获得1💰 | 拖拽到战场部署 | 三个同名干员自动合成)</h3>
+            <div id="bench"></div>
+        </div>
+    </div>
+    
+    <script src="game.js"></script>
+</body>
+</html>
