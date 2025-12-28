@@ -207,6 +207,124 @@ button:disabled {
     margin-bottom: 20px;
 }
 
+#left-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#battlefield {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+}
+
+#bench-area {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px solid rgba(100, 149, 237, 0.3);
+}
+
+#right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#faction-panel {
+    background: linear-gradient(135deg, rgba(30, 30, 50, 0.9) 0%, rgba(50, 50, 80, 0.9) 100%);
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+#faction-display {
+    max-height: 200px;
+    overflow-y: auto;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.faction-item {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    border-left: 3px solid #ffd700;
+}
+
+.faction-name {
+    font-weight: bold;
+    color: #ffd700;
+    margin-bottom: 4px;
+}
+
+.faction-count {
+    color: #4facfe;
+    font-size: 11px;
+}
+
+.faction-desc {
+    color: #aaa;
+    font-size: 11px;
+    margin-top: 4px;
+}
+
+.faction-stack-method {
+    color: #a78bfa;
+    font-size: 10px;
+    margin-top: 2px;
+    font-style: italic;
+}
+
+.faction-effect {
+    color: #4ade80;
+    font-size: 11px;
+    margin-top: 4px;
+    font-weight: bold;
+}
+
+.faction-stack-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 2px;
+    margin: 4px 0;
+    overflow: hidden;
+}
+
+.faction-stack-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ffd700 0%, #ffed4e 100%);
+    transition: width 0.3s;
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+}
+
+.faction-inactive {
+    opacity: 0.5;
+    border-left-color: #666;
+}
+
+.faction-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.faction-stat {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    color: #fff;
+}
+
 #battlefield, #shop-area, #bench-area {
     background: linear-gradient(135deg, rgba(30, 30, 50, 0.9) 0%, rgba(50, 50, 80, 0.9) 100%);
     padding: 20px;
@@ -225,6 +343,9 @@ h3 {
     letter-spacing: 2px;
     position: relative;
     padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 h3::after {
@@ -236,6 +357,22 @@ h3::after {
     height: 3px;
     background: linear-gradient(90deg, #ffd700, transparent);
     border-radius: 2px;
+}
+
+.btn-faction-detail {
+    font-size: 12px;
+    padding: 4px 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.btn-faction-detail:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5);
 }
 
 #grid {
@@ -369,6 +506,37 @@ h3::after {
     text-align: center;
     margin-bottom: 5px;
     text-shadow: 0 0 8px rgba(255, 215, 0, 0.8);
+}
+
+.operator-faction {
+    font-size: 10px;
+    text-align: center;
+    color: #ffd700;
+    margin-bottom: 2px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+
+.operator-factions {
+    font-size: 9px;
+    text-align: center;
+    color: #ffd700;
+    margin-bottom: 3px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 3px 4px;
+    border-radius: 4px;
+    line-height: 1.3;
+    max-height: 32px;
+    overflow: hidden;
+}
+
+.operator-stack-method {
+    font-size: 9px;
+    text-align: center;
+    color: #a78bfa;
+    margin-bottom: 5px;
+    font-style: italic;
 }
 
 .operator-cost {
@@ -631,4 +799,195 @@ h3::after {
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
     margin-bottom: 2px;
     font-weight: bold;
+}
+
+
+/* 羁绊按钮样式 */
+.btn-faction {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+}
+
+.btn-faction:hover {
+    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.6);
+}
+
+
+/* 游戏开始界面 */
+#start-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.start-container {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 60px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.start-container h1 {
+    font-size: 48px;
+    margin-bottom: 10px;
+    color: #ffd700;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+.subtitle {
+    font-size: 18px;
+    color: #fff;
+    margin-bottom: 40px;
+    opacity: 0.8;
+}
+
+.btn-start {
+    font-size: 24px;
+    padding: 15px 60px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-start:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+#banned-factions-display {
+    margin-top: 30px;
+    padding: 20px;
+    background: rgba(255, 0, 0, 0.1);
+    border-radius: 10px;
+    border: 2px solid rgba(255, 0, 0, 0.3);
+}
+
+#banned-factions-display h3 {
+    color: #ff6b6b;
+    margin-bottom: 15px;
+}
+
+#banned-factions-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.banned-faction-tag {
+    background: rgba(255, 0, 0, 0.2);
+    color: #ff6b6b;
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 0, 0, 0.4);
+    font-weight: bold;
+}
+
+/* 商店干员闪烁效果 */
+@keyframes shop-glow {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        border-color: rgba(255, 215, 0, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(255, 215, 0, 1), 0 0 30px rgba(255, 215, 0, 0.8);
+        border-color: rgba(255, 215, 0, 1);
+    }
+}
+
+.operator-card.can-merge {
+    animation: shop-glow 1.5s ease-in-out infinite;
+    border: 2px solid #ffd700;
+}
+
+/* 冻结仓库按钮激活状态 */
+#freeze-shop.frozen {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    box-shadow: 0 4px 15px rgba(79, 172, 254, 0.6);
+}
+
+/* 羁绊可点击样式 */
+.faction-item {
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.faction-item:hover {
+    background: rgba(255, 215, 0, 0.2);
+    transform: translateX(5px);
+}
+
+/* 羁绊干员列表弹窗 */
+.faction-operators-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(30, 30, 50, 0.95);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9998;
+}
+
+.faction-operators-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.faction-operator-item {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 0, 0, 0.3);
+    border: none;
+    color: white;
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.modal-close-btn:hover {
+    background: rgba(255, 0, 0, 0.6);
+    transform: rotate(90deg);
 }

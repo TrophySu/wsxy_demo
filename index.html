@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>卫戍协议：盟约</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="imageCanvas" style="display:none;"></canvas>
+    
+    <!-- 游戏开始界面 -->
+    <div id="start-screen">
+        <div class="start-container">
+            <h1>🎮 卫戍协议：盟约</h1>
+            <p class="subtitle">Garrison Protocol: Alliance</p>
+            <button id="start-game-btn" class="btn-start">开始游戏</button>
+            <div id="banned-factions-display" style="display:none;">
+                <h3>⚠️ 本局禁用羁绊</h3>
+                <div id="banned-factions-list"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="game-container" style="display:none;">
+        <div id="header">
+            <div class="info-panel">
+                <div class="info-item">
+                    <span class="label">🎯 回合</span>
+                    <span class="value" id="round">1</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">⏱️ 时间</span>
+                    <span class="value" id="timer">100</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">💰 金币</span>
+                    <span class="value"><span id="gold">5</span>/<span id="max-gold">5</span></span>
+                </div>
+                <div class="info-item">
+                    <span class="label">❤️ 生命</span>
+                    <span class="value" id="life">10</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">🏪 商店</span>
+                    <span class="value">Lv.<span id="shop-level">1</span></span>
+                </div>
+                <div class="info-item">
+                    <span class="label">👥 部署</span>
+                    <span class="value" id="deploy-info">0/6</span>
+                </div>
+            </div>
+            <div class="button-group">
+                <button id="start-battle" class="btn-primary">⚔️ 开始战斗</button>
+                <button id="refresh-shop" class="btn-secondary">🔄 刷新 (1💰)</button>
+                <button id="freeze-shop" class="btn-secondary">❄️ 冻结仓库</button>
+                <button id="upgrade-shop" class="btn-upgrade">⬆️ 升级 (<span id="upgrade-cost">5</span>💰)</button>
+                <button id="show-next-wave" class="btn-info">👁️ 查看敌人</button>
+            </div>
+        </div>
+        
+        <div id="main-area">
+            <div id="left-panel">
+                <div id="battlefield">
+                    <h3>🗺️ 战场地图</h3>
+                    <div id="grid"></div>
+                </div>
+                
+                <div id="bench-area">
+                    <h3>📦 备战区 (Shift+右键卖出干员，获得1💰 | 右键切换朝向 | 拖拽到战场部署 | 三个同名干员自动合成)</h3>
+                    <div id="bench"></div>
+                </div>
+            </div>
+            
+            <div id="right-panel">
+                <div id="faction-panel">
+                    <h3>🤝 羁绊效果 
+                        <button id="show-faction-details" class="btn-faction-detail">详情</button>
+                        <button id="show-banned-factions" class="btn-faction-detail">禁用羁绊</button>
+                    </h3>
+                    <div id="faction-display"></div>
+                </div>
+                
+                <div id="shop-area">
+                    <h3>🏪 干员商店</h3>
+                    <div id="shop"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="arknights_config.js"></script>
+    <script src="faction-system.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
